@@ -14,6 +14,13 @@ from models import Task, User
 
 #def connect_db():         # commented out when replaced with sqlalchemy method
 #	return sqlite3.connect(app.config['DATABASE_PATH'])
+
+def flash_errors(form):
+	for field, errors in form.errors.items():
+		for error in errors:
+			flash(u"Error in %s field - %s "%(getattr(form, field).label.text, error), 'error')
+			
+
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
 	error = None
@@ -111,7 +118,7 @@ def logout():
 @app.route('/', methods=['GET','POST'])
 def login():
 	error = None
-	form = LoginForm(request.form)
+	form = LoginForm(request.form)  #request.form
 	if request.method == 'POST':
 		print("requestMethod")
 		if form.validate_on_submit():
